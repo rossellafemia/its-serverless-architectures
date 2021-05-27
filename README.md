@@ -2,7 +2,7 @@
 This is a repository for the course
 
 
-Testo aggiunto da Alessandro Castellano
+Testo aggiunto da Trocchio Lorenzo
 
 Primo fork
 
