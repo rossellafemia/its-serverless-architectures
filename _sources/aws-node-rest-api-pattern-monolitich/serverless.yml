@@ -44,7 +44,7 @@ functions:
           cors: true
       - http:
           path: todos/{id}
-          method: get
+          method: get 
           cors: true
       - http:
           path: todos/{id}

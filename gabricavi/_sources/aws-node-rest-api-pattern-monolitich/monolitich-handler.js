@@ -8,7 +8,6 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 module.exports.create = (event, context, callback) => {
   const timestamp = new Date().getTime();
   const data = JSON.parse(event.body);
-
   let params = {
     TableName: "",
   };
@@ -56,8 +55,8 @@ module.exports.create = (event, context, callback) => {
         },
       };
       break;
-  }  
-
+  }
+  
   // write the todo to the database
   dynamoDb.put(params, (error) => {
     // handle potential errors
@@ -304,7 +303,6 @@ module.exports.delete = (event, context, callback) => {
     callback(null, response);
   });
 };
-
 
 module.exports.handler = (event, context, callback) => {
     switch (event.httpMethod) {
