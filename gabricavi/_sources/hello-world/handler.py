@@ -13,5 +13,4 @@ def hello(event, context):
         "statusCode": 200,
         "body": json.dumps(body)
     }
-
     return response
