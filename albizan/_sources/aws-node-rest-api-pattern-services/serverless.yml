@@ -9,6 +9,7 @@ provider:
   profile: serverless-admin
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    DYNAMODB_TABLE_TODOS_RICH: ${self:service}-${opt:stage, self:provider.stage}-RICH
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -19,7 +20,15 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
-
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_TODOS_RICH}" 
 functions:
   todosHandler:
     handler: todos/handler.todoshandler
@@ -44,6 +53,30 @@ functions:
           path: todos/{id}
           method: delete
           cors: true
+  todosRichHandler:
+    handler: todos_rich/handler.handler
+    events:
+      - http:
+          path: todos_rich
+          method: post
+          cors: true
+      - http:
+          path: todos_rich
+          method: get
+          cors: true
+      - http:
+          path: todos_rich/{id}
+          method: get
+          cors: true
+      - http:
+          path: todos_rich/{id}
+          method: put
+          cors: true
+      - http:
+          path: todos_rich/{id}
+          method: delete
+          cors: true
+
 
 resources:
   Resources:
@@ -63,3 +96,19 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:provider.environment.DYNAMODB_TABLE}
+    TodosRichDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.DYNAMODB_TABLE_TODOS_RICH}

@@ -53,7 +53,27 @@ functions:
       - http:
           path: todos/{id}
           method: delete
-          cors: true  
+          cors: true
+      - http:
+          path: todos_rich
+          method: post
+          cors: true
+      - http:
+          path: todos_rich
+          method: get
+          cors: true
+      - http:
+          path: todos_rich/{id}
+          method: get
+          cors: true
+      - http:
+          path: todos_rich/{id}
+          method: put
+          cors: true          
+      - http:
+          path: todos_rich/{id}
+          method: delete
+          cors: true
 resources:
   Resources:
     TodosDynamoDbTable:
