@@ -44,6 +44,30 @@ functions:
           path: todos/{id}
           method: delete
           cors: true
+  todosRichHandler:
+    handler: todos_rich/handler.todosrichhandler
+    events:
+      - http:
+          path: todos
+          method: post
+          cors: true
+      - http:
+          path: todos
+          method: get
+          cors: true
+      - http:
+          path: todos/{id}
+          method: get
+          cors: true
+      - http:
+          path: todos/{id}
+          method: put
+          cors: true
+      - http:
+          path: todos/{id}
+          method: delete
+          cors: true
+          
 
 resources:
   Resources:
