@@ -5,7 +5,18 @@ const AWS = require('aws-sdk'); // eslint-disable-line import/no-extraneous-depe
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-module.exports.create = (event, context, callback) => {
+
+  /*
+        ████████╗░█████╗░██████╗░░█████╗░
+        ╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗
+        ░░░██║░░░██║░░██║██║░░██║██║░░██║
+        ░░░██║░░░██║░░██║██║░░██║██║░░██║
+        ░░░██║░░░╚█████╔╝██████╔╝╚█████╔╝
+        ░░░╚═╝░░░░╚════╝░╚═════╝░░╚════╝░
+  */
+
+
+module.exports.createTodo = (event, context, callback) => {
   const timestamp = new Date().getTime();
   const data = JSON.parse(event.body);
   if (typeof data.text !== 'string') {
@@ -51,7 +62,7 @@ module.exports.create = (event, context, callback) => {
   });
 };
 
-module.exports.get = (event, context, callback) => {
+module.exports.getTodo = (event, context, callback) => {
     const params = {
       TableName: process.env.DYNAMODB_TABLE_TODOS,
       Key: {
@@ -79,10 +90,9 @@ module.exports.get = (event, context, callback) => {
       };
       callback(null, response);
     });
-  };
-  
+};
 
-  module.exports.list = (event, context, callback) => {
+module.exports.listTodo = (event, context, callback) => {
     // fetch all todos from the database
     dynamoDb.scan(params, (error, result) => {
       // handle potential errors
@@ -103,10 +113,9 @@ module.exports.get = (event, context, callback) => {
       };
       callback(null, response);
     });
-  };
+};
 
-
-  module.exports.update = (event, context, callback) => {
+module.exports.updateTodo = (event, context, callback) => {
     const timestamp = new Date().getTime();
     const data = JSON.parse(event.body);
   
@@ -158,10 +167,9 @@ module.exports.get = (event, context, callback) => {
       };
       callback(null, response);
     });
-  };
-  
+};
 
-module.exports.delete = (event, context, callback) => {
+module.exports.deleteTodo = (event, context, callback) => {
     const params = {
       TableName: process.env.DYNAMODB_TABLE_TODOS,
       Key: {
@@ -189,23 +197,264 @@ module.exports.delete = (event, context, callback) => {
       };
       callback(null, response);
     });
+};
+
+
+
+
+
+/*
+████████╗░█████╗░██████╗░░█████╗░██████╗░██╗░█████╗░██╗░░██╗
+╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗██╔══██╗██║██╔══██╗██║░░██║
+░░░██║░░░██║░░██║██║░░██║██║░░██║██████╔╝██║██║░░╚═╝███████║
+░░░██║░░░██║░░██║██║░░██║██║░░██║██╔══██╗██║██║░░██╗██╔══██║
+░░░██║░░░╚█████╔╝██████╔╝╚█████╔╝██║░░██║██║╚█████╔╝██║░░██║
+░░░╚═╝░░░░╚════╝░╚═════╝░░╚════╝░╚═╝░░╚═╝╚═╝░╚════╝░╚═╝░░╚═╝
+*/
+
+module.exports.createTodoRich = (event, context, callback) => {
+  const timestamp = new Date().getTime();
+  const data = JSON.parse(event.body);
+  if (typeof data.text !== 'string') {
+    console.error('Validation Failed');
+    callback(null, {
+      statusCode: 400,
+      headers: { 'Content-Type': 'text/plain' },
+      body: 'Couldn\'t create the todo_rich item.',
+    });
+    return;
+  }
+
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE_TODOS_RICH,
+    Item: {
+      id: uuid.v1(),
+      text: data.text,
+      checked: false,
+      edits: number,
+      language: string,
+      color: string,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    },
   };
 
+  // write the todo to the database
+  dynamoDb.put(params, (error) => {
+    // handle potential errors
+    if (error) {
+      console.error(error);
+      callback(null, {
+        statusCode: error.statusCode || 501,
+        headers: { 'Content-Type': 'text/plain' },
+        body: 'Couldn\'t create the todo_rich item.',
+      });
+      return;
+    }
+
+    // create a response
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify(params.Item),
+    };
+    callback(null, response);
+  });
+};
+module.exports.getTodoRich = (event, context, callback) => {
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE_TODOS_RICH,
+    Key: {
+      id: event.pathParameters.id,
+    },
+  };
+
+  // fetch todo from the database
+  dynamoDb.get(params, (error, result) => {
+    // handle potential errors
+    if (error) {
+      console.error(error);
+      callback(null, {
+        statusCode: error.statusCode || 501,
+        headers: { 'Content-Type': 'text/plain' },
+        body: 'Couldn\'t fetch the todo_rich item.',
+      });
+      return;
+    }
+
+    // create a response
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify(result.Item),
+    };
+    callback(null, response);
+  });
+};
+module.exports.listTodoRich = (event, context, callback) => {
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE_TODOS_RICH,
+    Key: {
+      id: event.pathParameters.id,
+    },
+  };
+  // fetch all todo_rich from the database
+  dynamoDb.scan(params, (error, result) => {
+    // handle potential errors
+    if (error) {
+      console.error(error);
+      callback(null, {
+        statusCode: error.statusCode || 501,
+        headers: { 'Content-Type': 'text/plain' },
+        body: 'Couldn\'t fetch the todo rich.',
+      });
+      return;
+    }
+
+    // create a response
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify(result.Items),
+    };
+    callback(null, response);
+  });
+};
+module.exports.updateTodoRich = (event, context, callback) => {
+  const timestamp = new Date().getTime();
+  const data = JSON.parse(event.body);
+
+  // validation
+  if (typeof data.text !== 'string' || typeof data.checked !== 'boolean') {
+    console.error('Validation Failed');
+    callback(null, {
+      statusCode: 400,
+      headers: { 'Content-Type': 'text/plain' },
+      body: 'Couldn\'t update the todo rich item.',
+    });
+    return;
+  }
+
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE_TODOS_RICH,
+    Key: {
+      id: event.pathParameters.id,
+    },
+    ExpressionAttributeNames: {
+      '#todo_text': 'text',
+    },
+    ExpressionAttributeValues: {
+      ':text': data.text,
+      ':checked': data.checked,
+      ':updatedAt': timestamp,
+    },
+    UpdateExpression: 'SET #todo_text = :text, checked = :checked, updatedAt = :updatedAt',
+    ReturnValues: 'ALL_NEW',
+  };
+
+  // update the todo in the database
+  dynamoDb.update(params, (error, result) => {
+    // handle potential errors
+    if (error) {
+      console.error(error);
+      callback(null, {
+        statusCode: error.statusCode || 501,
+        headers: { 'Content-Type': 'text/plain' },
+        body: 'Couldn\'t fetch the todo rich item.',
+      });
+      return;
+    }
+
+    // create a response
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify(result.Attributes),
+    };
+    callback(null, response);
+  });
+};
+module.exports.deleteTodoRich = (event, context, callback) => {
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE_TODOS_RICH,
+    Key: {
+      id: event.pathParameters.id,
+    },
+  };
+
+  // delete the todo from the database
+  dynamoDb.delete(params, (error) => {
+    // handle potential errors
+    if (error) {
+      console.error(error);
+      callback(null, {
+        statusCode: error.statusCode || 501,
+        headers: { 'Content-Type': 'text/plain' },
+        body: 'Couldn\'t remove the todo rich item.',
+      });
+      return;
+    }
+
+    // create a response
+    const response = {
+      statusCode: 204,
+      body: JSON.stringify({}),
+    };
+    callback(null, response);
+  });
+};
+
+
+
+
+function todoHandler(event, context, callback) {
+  switch (event.httpMethod) {
+    case "POST":
+        return this.createTodo(event, context, callback);
+    case "GET":
+        if (event.pathParameters && event.pathParameters.id) {
+            return this.getTodo(event, context, callback);
+        } else {
+            return this.listTodo(event, context, callback);
+        }
+    case "PUT":
+        return this.updateTodo(event, context, callback);        
+    case "DELETE":
+        return this.deleteTodo(event, context, callback);
+  }
+}
+
+function todoRichHandler(event, context, callback) {
+  switch (event.httpMethod) {
+    case "POST":
+        return this.createTodoRich(event, context, callback);
+    case "GET":
+        if (event.pathParameters && event.pathParameters.id) {
+            return this.getTodoRich(event, context, callback);
+        } else {
+            return this.listTodoRich(event, context, callback);
+        }
+    case "PUT":
+        return this.updateTodoRich(event, context, callback);        
+    case "DELETE":
+        return this.deleteTodoRich(event, context, callback);
+  }
+}
 
 module.exports.handler = (event, context, callback) => {
-    switch (event.httpMethod) {
-        case "POST":
-            return this.create(event, context, callback);
-        case "GET":
-            if (event.pathParameters && event.pathParameters.id) {
-                return this.get(event, context, callback);
-            } else {
-                return this.list(event, context, callback);
-            }
-        case "PUT":
-            return this.update(event, context, callback);        
-        case "DELETE":
-            return this.delete(event, context, callback);
-    }
-    
+
+  // Ipotizzo di trovare il path all'interno dell'oggetto event
+  const path = event.path;
+
+  switch(path) {
+    case "/todo":
+      todoHandler(event, context, callback);
+      break;
+    case "/todo_rich":
+      todoRichHandler(event, context, callback);
+      break;
+    default:
+      callback(null, {
+        statusCode: error.statusCode || 501,
+        headers: { 'Content-Type': 'text/plain' },
+        body: 'Non ho idea di come tu possa arrivare qui',
+      });
+  }
+  
 };

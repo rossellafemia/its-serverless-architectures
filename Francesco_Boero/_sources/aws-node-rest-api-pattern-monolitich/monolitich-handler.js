@@ -24,6 +24,8 @@ module.exports.create = (event, context, callback) => {
       id: uuid.v1(),
       text: data.text,
       checked: false,
+      isRich: false,
+      price: data.price,
       createdAt: timestamp,
       updatedAt: timestamp,
     },
@@ -111,8 +113,10 @@ module.exports.get = (event, context, callback) => {
     const data = JSON.parse(event.body);
   
     // validation
-    if (typeof data.text !== 'string' || typeof data.checked !== 'boolean') {
+    if (typeof data.text !== 'string' || typeof data.checked !== 'boolean' || typeof data.isRich !== 'boolean') {
+      if(data.isRich == true && typeof data.price !== 'double'){
       console.error('Validation Failed');
+      }
       callback(null, {
         statusCode: 400,
         headers: { 'Content-Type': 'text/plain' },
