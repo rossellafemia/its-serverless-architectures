@@ -9,11 +9,16 @@ provider:
   profile: serverless-admin
   environment:
 <<<<<<< HEAD
+<<<<<<< HEAD
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
 =======
     DYN_T_TODOS: ${self:service}-${opt:stage, self:provider.stage}-todos
     DYN_T_CONTACTS: ${self:service}-${opt:stage, self:provider.stage}-contacts
 >>>>>>> de4f989a18eb9909f992a5a39a4c8964f6e25d2b
+=======
+    DYN_T_TODOS: ${self:service}-${opt:stage, self:provider.stage}-todos
+    DYN_T_CONTACTS: ${self:service}-${opt:stage, self:provider.stage}-contacts
+>>>>>>> 1d45983c6ddd89f20241e6eba4adcfb24320bdac
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -24,8 +29,11 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
 <<<<<<< HEAD
+<<<<<<< HEAD
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 =======
+=======
+>>>>>>> 1d45983c6ddd89f20241e6eba4adcfb24320bdac
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYN_T_TODOS}"
     - Effect: Allow
       Action:
@@ -36,7 +44,10 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYN_T_CONTACTS}"  
+<<<<<<< HEAD
 >>>>>>> de4f989a18eb9909f992a5a39a4c8964f6e25d2b
+=======
+>>>>>>> 1d45983c6ddd89f20241e6eba4adcfb24320bdac
 
 functions:
   todosHandler:
@@ -63,7 +74,10 @@ functions:
           method: delete
           cors: true
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 1d45983c6ddd89f20241e6eba4adcfb24320bdac
   contactsHandler:
     handler: contacts/handler.contactshandler
     events:
@@ -87,7 +101,10 @@ functions:
           path: contacts/{id}
           method: delete
           cors: true
+<<<<<<< HEAD
 >>>>>>> de4f989a18eb9909f992a5a39a4c8964f6e25d2b
+=======
+>>>>>>> 1d45983c6ddd89f20241e6eba4adcfb24320bdac
 
 resources:
   Resources:
@@ -107,8 +124,11 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
 <<<<<<< HEAD
+<<<<<<< HEAD
         TableName: ${self:provider.environment.DYNAMODB_TABLE}
 =======
+=======
+>>>>>>> 1d45983c6ddd89f20241e6eba4adcfb24320bdac
         TableName: ${self:provider.environment.DYN_T_TODOS}
     ContactsDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
@@ -126,4 +146,7 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:provider.environment.DYN_T_CONTACTS}   
+<<<<<<< HEAD
 >>>>>>> de4f989a18eb9909f992a5a39a4c8964f6e25d2b
+=======
+>>>>>>> 1d45983c6ddd89f20241e6eba4adcfb24320bdac

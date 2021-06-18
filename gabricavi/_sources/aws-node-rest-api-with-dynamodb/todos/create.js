@@ -24,6 +24,7 @@ module.exports.create = (event, context, callback) => {
       id: uuid.v1(),
       text: data.text,
       checked: false,
+      brewed: data.brewed || false,
       createdAt: timestamp,
       updatedAt: timestamp,
     },
@@ -44,7 +45,7 @@ module.exports.create = (event, context, callback) => {
 
     // create a response
     const response = {
-      statusCode: 200,
+      statusCode: 201,
       body: JSON.stringify(params.Item),
     };
     callback(null, response);
