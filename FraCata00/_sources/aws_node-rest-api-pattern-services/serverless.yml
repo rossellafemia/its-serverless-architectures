@@ -22,26 +22,26 @@ provider:
 
 functions:
   todosHandler:
-    handler: todos/handler.todoshandler
+    handler: portfolioNetwork/handler.portfolioNetworkhandler
     events:
       - http:
-          path: todos
+          path: portfolioNetwork
           method: post
           cors: true
       - http:
-          path: todos
+          path: portfolioNetwork
           method: get
           cors: true
       - http:
-          path: todos/{id}
+          path: portfolioNetwork/{id}
           method: get
           cors: true
       - http:
-          path: todos/{id}
+          path: portfolioNetwork/{id}
           method: put
           cors: true
       - http:
-          path: todos/{id}
+          path: portfolioNetwork/{id}
           method: delete
           cors: true
 
