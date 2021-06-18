@@ -24,13 +24,8 @@ provider:
   name: aws
   runtime: python2.7
   lambdaHashingVersion: 20201221
-<<<<<<< HEAD
   region: us-east-1
-  profile: serverless-admin-its
-=======
-  region: eu-central-1
   profile: serverless-admin
->>>>>>> de4f989a18eb9909f992a5a39a4c8964f6e25d2b
 
 # you can overwrite defaults here
 #  stage: dev
