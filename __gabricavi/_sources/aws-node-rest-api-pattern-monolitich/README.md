@@ -11,6 +11,8 @@ authorAvatar: 'https://avatars3.githubusercontent.com/u/8954908?v=4&s=140'
 -->
 # Serverless REST API
 
+OK
+
 This example demonstrates how to setup a [RESTful Web Services](https://en.wikipedia.org/wiki/Representational_state_transfer#Applied_to_web_services) allowing you to create, list, get, update and delete Todos. DynamoDB is used to store the data. This is just an example and of course you could use any data storage as a backend.
 
 ## Structure
@@ -146,3 +148,5 @@ This is can be done via settings in the `serverless.yml`.
 ```
 
 In case you expect a lot of traffic fluctuation we recommend to checkout this guide on how to auto scale DynamoDB [https://aws.amazon.com/blogs/aws/auto-scale-dynamodb-with-dynamic-dynamodb/](https://aws.amazon.com/blogs/aws/auto-scale-dynamodb-with-dynamic-dynamodb/)
+
+#This is my project
