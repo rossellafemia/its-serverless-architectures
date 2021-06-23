@@ -1,11 +1,11 @@
-service: sls-rest-api-pattern-service
+service: hogwarts-point-dynambodb
 
 frameworkVersion: ">=1.1.0"
 
 provider:
   name: aws
   runtime: nodejs10.x
-  region: eu-central-1
+  region: us-east-1
   profile: serverless-admin
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
@@ -21,58 +21,49 @@ provider:
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 
 functions:
-  todosHandler:
-    handler: todos/handler.todoshandler
+  create:
+    handler: hogwarts/create.create
     events:
       - http:
-          path: todos
+          path:  hogwarts
           method: post
           cors: true
-      - http:
-          path: todos
-          method: get
-          cors: true
-      - http:
-          path: todos/{id}
-          method: get
-          cors: true
-      - http:
-          path: todos/{id}
-          method: put
-          cors: true
-      - http:
-          path: todos/{id}
-          method: delete
-          cors: true
 
-  todosrichHandler:
-    handler: todosrich/handler.todosrichhandler
+  list:
+    handler: hogwarts/list.list
     events:
       - http:
-          path: todosrich
-          method: post
-          cors: true
-      - http:
-          path: todosrich
+          path: hogwarts
           method: get
-          cors: true
-      - http:
-          path: todosrich/{id}
-          method: get
-          cors: true
-      - http:
-          path: todosrich/{id}
-          method: put
-          cors: true
-      - http:
-          path: todosrich/{id}
-          method: delete
           cors: true
 
+  get:
+    handler: hogwarts/get.get
+    events:
+      - http:
+          path: hogwarts/{housename}
+          method: get
+          cors: true
+
+  update:
+    handler: hogwarts/update.update
+    events:
+      - http:
+          path: hogwarts/{housename}/{points}
+          method: put
+          cors: true
+
+  delete:
+    handler: hogwarts/delete.delete
+    events:
+      - http:
+          path: hogwarts/{housename}
+          method: delete
+          cors: true
 
 resources:
   Resources:
-    TodosDynamoDbTable:
+    hogwartsDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain
       Properties:
