@@ -45,31 +45,6 @@ functions:
           method: delete
           cors: true
 
-  todosrichHandler:
-    handler: todosrich/handler.todosrichhandler
-    events:
-      - http:
-          path: todosrich
-          method: post
-          cors: true
-      - http:
-          path: todosrich
-          method: get
-          cors: true
-      - http:
-          path: todosrich/{id}
-          method: get
-          cors: true
-      - http:
-          path: todosrich/{id}
-          method: put
-          cors: true
-      - http:
-          path: todosrich/{id}
-          method: delete
-          cors: true
-
-
 resources:
   Resources:
     TodosDynamoDbTable:

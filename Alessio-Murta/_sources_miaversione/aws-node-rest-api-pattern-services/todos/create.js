@@ -44,7 +44,7 @@ module.exports.create = (event, context, callback) => {
 
     // create a response
     const response = {
-      statusCode: 201,
+      statusCode: 200,
       body: JSON.stringify(params.Item),
     };
     callback(null, response);

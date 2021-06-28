@@ -1,7 +1,7 @@
 'use strict';
 
 const uuid = require('uuid');
-const AWS = require('aws-sdk'); // eslint-disable-line import/no-extraneous-dependencies
+const AWS = require('./node_modules/aws-sdk'); // eslint-disable-line import/no-extraneous-dependencies
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
@@ -44,7 +44,7 @@ module.exports.create = (event, context, callback) => {
 
     // create a response
     const response = {
-      statusCode: 201,
+      statusCode: 200,
       body: JSON.stringify(params.Item),
     };
     callback(null, response);
