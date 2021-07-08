@@ -2,18 +2,39 @@
 
 const uuid = require('uuid');
 const AWS = require('aws-sdk'); // eslint-disable-line import/no-extraneous-dependencies
-
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.create = (event, context, callback) => {
   const timestamp = new Date().getTime();
+
   const data = JSON.parse(event.body);
-  const housename = Object.keys(data)[0];
+
+  if (typeof data.title !== 'string' || typeof data.duration !== 'number' || typeof data.director !== 'string'  ) {
+    console.error('Validation Failed');
+    console.error(typeof data.duration);
+    callback(null, {
+      statusCode: 422,
+      headers: { 'Content-Type': 'text/plain' },
+      body: 'Couldn\'t create the film.',
+    });
+    return;
+  }
+  
+  const { title, duration, director } = data;
+
   const params = {
-    TableName: process.env.DYNAMODB_TABLE
+    TableName: process.env.MOVIES_TABLE,
+    Item: {
+      id: uuid.v1(),
+      title,
+      duration,
+      director,
+      watched: false,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    },
   };
-  params.set(housename);
-  console.log(params);
+
   // write the todo to the database
   dynamoDb.put(params, (error) => {
     // handle potential errors
@@ -22,7 +43,7 @@ module.exports.create = (event, context, callback) => {
       callback(null, {
         statusCode: error.statusCode || 501,
         headers: { 'Content-Type': 'text/plain' },
-        body: 'Couldn\'t create the new House of Hogwarts item.',
+        body: 'Couldn\'t create the movies item.',
       });
       return;
     }
