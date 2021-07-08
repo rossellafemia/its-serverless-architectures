@@ -22,6 +22,7 @@ module.exports.create = (event, context, callback) => {
           body: 'Couldn\'t create the todo item.',
         });
         return;
+        
       }
       params = {
         TableName: process.env.DYN_T_TODOS,
