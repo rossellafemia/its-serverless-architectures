@@ -19,7 +19,7 @@ module.exports.create = (event, context, callback) => {
   }
 
   const params = {
-    TableName: process.env.DYNAMODB_TABLE,
+    TableName: process.env.DYN_T_TODOS,
     Item: {
       id: uuid.v1(),
       text: data.text,
@@ -44,7 +44,7 @@ module.exports.create = (event, context, callback) => {
 
     // create a response
     const response = {
-      statusCode: 200,
+      statusCode: 201,
       body: JSON.stringify(params.Item),
     };
     callback(null, response);
