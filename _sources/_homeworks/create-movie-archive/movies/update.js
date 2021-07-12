@@ -13,7 +13,11 @@ module.exports.update = (event, context, callback) => {
 
   let validationPass = true;
 
-  if ((typeof data.title !== 'undefined' && typeof data.title !== 'string') || (typeof data.duration !== 'undefined' &&  typeof data.duration !== 'number')) {
+  if (
+    (typeof data.title !== 'undefined' && (typeof data.title !== 'string' || data.title.length <= 0)) 
+    || 
+    (typeof data.duration !== 'undefined' &&  (typeof data.duration !== 'number' || data.duration <= 0))) 
+    {
     validationPass = false;
   }
 
