@@ -5,7 +5,7 @@ frameworkVersion: ">=1.1.0"
 provider:
   name: aws
   runtime: nodejs10.x
-  region: eu-central-1
+  region: us-east-1
   profile: serverless-admin
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}

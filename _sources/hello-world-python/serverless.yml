@@ -24,8 +24,10 @@ provider:
   name: aws
   runtime: python2.7
   lambdaHashingVersion: 20201221
-  region: eu-central-1
+  region: us-east-1
   profile: serverless-admin
+  timeout: 10
+  memorySize: 256
 
 # you can overwrite defaults here
 #  stage: dev
@@ -62,6 +64,8 @@ provider:
 functions:
   hello:
     handler: handler.hello
+    provisionedConcurrency: 3
+    reservedConcurrency: 5
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details

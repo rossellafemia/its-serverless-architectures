@@ -1,4 +1,5 @@
 import json
+import time
 
 
 def hello(event, context):
@@ -6,6 +7,8 @@ def hello(event, context):
         "message": "Go Serverless v1.0!",
         "input": event
     }
+
+    time.sleep(11)
 
     response = {
         "statusCode": 200,
