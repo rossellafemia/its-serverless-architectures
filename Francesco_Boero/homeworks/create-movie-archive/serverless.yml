@@ -1,14 +1,12 @@
 service: film-collection-manager
 
-frameworkVersion: ">=1.1.0 <2.43.0"
+frameworkVersion: "2.46.0"
 
 provider:
   name: aws
   runtime: nodejs12.x
   region: us-east-1
   profile: serverless-admin
-  timeout: 2
-  memorySize: 256
   environment:
     MOVIES_TABLE: ${self:service}-${opt:stage, self:provider.stage}
   iamRoleStatements:
@@ -33,13 +31,25 @@ functions:
 
   list:
     handler: movies/list.list
-    timeout: 6
-    memorySize: 1024
-    provisionedConcurrency: 3
-    reservedConcurrency: 10
     events:
       - http:
           path: movies
+          method: get
+          cors: true
+
+  listByDirector:
+    handler: movies/listByDirector.listByDirector
+    events:
+      - http:
+          path: movies/{director}
+          method: get
+          cors: true
+
+  listByTitle:
+    handler: movies/listByTitle.listByTitle
+    events:
+      - http:
+          path: movies/{title}
           method: get
           cors: true
 
