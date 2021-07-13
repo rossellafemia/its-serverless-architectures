@@ -9,7 +9,7 @@ module.exports.create = (event, context, callback) => {
 
   const data = JSON.parse(event.body);
 
-  if (typeof data.title !== 'string' || typeof data.duration !== 'number') {
+  if (typeof data.title !== 'string' || typeof data.duration !== 'number' || typeof data.director !== "string") {
     console.error('Validation Failed');
     console.error(typeof data.duration);
     callback(null, {
@@ -20,7 +20,7 @@ module.exports.create = (event, context, callback) => {
     return;
   }
 
-  const { title, duration } = data;
+  const { title, duration , director } = data;
 
   const params = {
     TableName: process.env.MOVIES_TABLE,
@@ -28,6 +28,7 @@ module.exports.create = (event, context, callback) => {
       id: uuid.v1(),
       title,
       duration,
+      director,
       watched: false,
       createdAt: timestamp,
       updatedAt: timestamp,
